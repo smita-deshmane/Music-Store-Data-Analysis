@@ -1,5 +1,3 @@
-use music_store_data
-
 --Who is senior most employee based on job title
 select top 1 * 
 from employee
@@ -12,14 +10,12 @@ group by billing_country
 order by invoice_per_country desc
 
 --Which city made most money
-
 select top 1 billing_city, sum(total) as total_invoice
 from invoice
 group by billing_city
 order by total_invoice desc
 
  --Which customer spent most money
-
 select c.customer_id, c.first_name, c.last_name, sum(i.total) as total_invoice
 from customer c
 join invoice i
@@ -28,7 +24,6 @@ group by c.customer_id, c.first_name, c.last_name
 order by total_invoice desc
 
  --List of Rock music listeners ordered alphabetically by email
-
  select distinct c.last_name, c.first_name, c.email
  from customer c
  join invoice i
@@ -45,7 +40,6 @@ order by total_invoice desc
  order by email 
 
  -- Top ten Rock artists
-
  select top 10 a.name, count(a.artist_id) as track_count
  from artist a 
  join album al
@@ -63,14 +57,12 @@ group by a.name
 order by track_count desc
 
 --Checking the tracks that has song length more than the average song length
-
  select * 
  from track
  where milliseconds>(select avg(milliseconds) from track)
  order by milliseconds desc
 
  --Who is best selling artist
-
  select top 1 ar.name, sum(il.unit_price*il.quantity) as total
  from invoice_line il
  join track t
@@ -82,9 +74,8 @@ order by track_count desc
  group by ar.name
  order by total desc
  
- --Top 10 customers who has spent most money
-
- select  top 10 c.first_name, c.last_name, sum(il.unit_price*il.quantity) as total
+ --How much money each each customer has spent on particular artist
+ select c.first_name, c.last_name, a.name, sum(il.unit_price*il.quantity) as total
  from customer c
  join invoice i
  on c.customer_id=i.invoice_id
@@ -96,11 +87,10 @@ order by track_count desc
  on t.album_id=al.album_id
  join artist ar
  on al.artist_id=ar.artist_id
- group by c.first_name, c.last_name
+ group by c.first_name, c.last_name, a.name
  order by total desc
 
  --Best selling genre 
-
  select top 1 g.name,sum(il.unit_price*il.quantity) as total
  from invoice_line il
  join track t
